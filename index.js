@@ -8,11 +8,8 @@ require('./models/user.js');
 require('./services/passport.js');
 const app=express();
 
-
-
-mongoose.connect(keys.mongoURI);
-
 app.use(bodyParser.json());
+mongoose.connect(keys.mongoURI);
 app.use(cookieSession({
     maxAge:30 * 24 * 60 * 60 * 1000,
     keys: [keys.cookieKey]
@@ -21,12 +18,18 @@ app.use(cookieSession({
 app.use(passport.initialize());
 app.use(passport.session());
 
-require('./routes/authRoutes.js')(app);
-require('./routes/billingRoutes.js')(app);
+require('./routes/authRoutes')(app);
+require('./routes/billingRoutes')(app);
 
-// app.get('/googlef77e1fbd8da8fc58.html', (req, res) => {
-//     res.sendFile(path.join(__dirname, 'public', 'googlef77e1fbd8da8fc58.html'));
-//   });
-  
+if(process.env.NODE_ENV==='production'){
+    // express will serve up production assets like our main.js file, or  ain.css file
+    app.use(express.static('client/build'));
+    // express will serve up the index.html file if it doesn,t recognize the route
+    const path=require('path');
+    app.get('*',(req, res)=>{
+        res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+    });
+}
+
 const PORT=process.env.PORT || 5000;
 app.listen(PORT);
