@@ -24,9 +24,9 @@ app.use(passport.session());
 require('./routes/authRoutes.js')(app);
 require('./routes/billingRoutes.js')(app);
 
-app.get('/googlef77e1fbd8da8fc58.html', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'googlef77e1fbd8da8fc58.html'));
-  });
+// app.get('/googlef77e1fbd8da8fc58.html', (req, res) => {
+//     res.sendFile(path.join(__dirname, 'public', 'googlef77e1fbd8da8fc58.html'));
+//   });
   
 const PORT=process.env.PORT || 5000;
 app.listen(PORT);
